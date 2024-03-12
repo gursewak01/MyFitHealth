@@ -25,10 +25,11 @@ class _LoginPageState extends State<LoginPage> {
     print(username);
 
     var response = await http.post(Uri.parse(apiurl), body: {
-      'Username': username, //get the email text
-      'Password': password //get password text
+      'Username': _username.text, //get the email text
+      'Password': _password.text //get password text
     });
-
+    print(_username.text);
+    print(response.statusCode);
     if (response.statusCode == 200) {
       var jsondata = json.decode(response.body);
       if (jsondata["error"]) {
@@ -45,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
           });
           //save the data returned from server
           //and navigate to home page
-          String uid = jsondata["uid"];
+          // String uid = jsondata["uid"];
           String email = jsondata["Email"];
           //  String address = jsondata["address"];
           print(email);

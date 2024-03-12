@@ -21,21 +21,28 @@ class _SignupPageState extends State<SignupPage> {
 
   TextEditingController _cPassword = TextEditingController();
 
+  TextEditingController age = TextEditingController();
+
+  TextEditingController gender = TextEditingController();
+
   Future<void> insertData() async {
     if (name.text != "" || email.text != "" || password.text != "") {
       try {
-        String uri = "http://localhost:81/UserData_api/insert_data.php";
+        String uri = "http://localhost:3010/auth/signup";
         var res = await http.post(Uri.parse(uri), body: {
-          "name": name.text,
+          "username": name.text,
+          "password": password.text,
           "email": email.text,
-          "password": password.text
+          "age": int.parse(age.text),
+          "gender": gender.text
         });
 
         var response = jsonDecode(res.body);
-        if (response["success"] == "true") {
+        if (response["message"] == "true") {
           print("Record Inserted");
         } else {
           print("some issue");
+          print(response);
         }
       } catch (e) {
         print(e);
@@ -45,19 +52,22 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
+  // String gender = "";
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appbar(context),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          height: MediaQuery.of(context).size.height - 50,
-          width: double.infinity,
-          child: Form(
-            key: _formKey,
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 40),
+        height: MediaQuery.of(context).size.height - 50,
+        width: double.infinity,
+        child: Form(
+          key: _formKey,
+          child: ScrollConfiguration(
+            behavior:
+                ScrollConfiguration.of(context).copyWith(scrollbars: false),
             child: SingleChildScrollView(
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -171,6 +181,66 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                         obscureText: true,
                       ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: age,
+                        decoration: InputDecoration(
+                            hintText: "Age",
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(18),
+                                borderSide: BorderSide.none),
+                            fillColor: Colors.purple.withOpacity(0.1),
+                            filled: true,
+                            prefixIcon: const Icon(Icons.person)),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: gender,
+                        decoration: InputDecoration(
+                            hintText: "Gender",
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(18),
+                                borderSide: BorderSide.none),
+                            fillColor: Colors.purple.withOpacity(0.1),
+                            filled: true,
+                            prefixIcon: const Icon(Icons.person)),
+                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left:6.0, right: 8),
+                      //   child: Row(
+                      //     children: [
+                      //       Text(
+                      //         "Gender:     ",
+                      //         style: TextStyle(
+                      //           fontSize: 16,
+                      //           // fontWeight: FontWeight.bold,
+                      //         ),
+                      //       ),
+                      //       Radio(
+                      //           value: "male",
+                      //           groupValue: gender,
+                      //           onChanged: (value) {
+                      //             setState(() {
+                      //               gender = value.toString();
+                      //             });
+                      //           }),
+                      //       Text("Male"),
+                      //       Radio(
+                      //           value: "female",
+                      //           groupValue: gender,
+                      //           onChanged: (value) {
+                      //             setState(() {
+                      //               gender = value.toString();
+                      //             });
+                      //           }),
+                      //       Text("Female"),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                   const SizedBox(
@@ -265,10 +335,12 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       TextButton(
                           style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStatePropertyAll(Colors.purple),
-                            shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(65)))
-                          ),
+                              backgroundColor:
+                                  MaterialStatePropertyAll(Colors.purple),
+                              shape: MaterialStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(65)))),
                           onPressed: () {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(

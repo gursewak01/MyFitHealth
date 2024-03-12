@@ -40,3 +40,11 @@ appbar(context) {
     ),
   );
 }
+
+BText(context) {
+  return Text(context, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 22));
+}
+
+MText(context) {
+  return Text(context, style: TextStyle(color: Colors.black, fontSize: 15));
+}

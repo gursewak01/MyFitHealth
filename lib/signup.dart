@@ -27,23 +27,32 @@ class _SignupPageState extends State<SignupPage> {
 
   Future<void> insertData() async {
     if (name.text != "" || email.text != "" || password.text != "") {
+      String uri = "http://localhost:3001/auth/signup";
+      var client = http.Client();
+      var user_data = {
+        "username": name.text,
+        "password": password.text,
+        "email": email.text,
+        "age": int.parse(age.text),
+        "gender": gender.text
+      };
+      var body = json.encode(user_data);
       try {
-        String uri = "http://localhost:3010/auth/signup";
-        var res = await http.post(Uri.parse(uri), body: {
-          "username": name.text,
-          "password": password.text,
-          "email": email.text,
-          "age": int.parse(age.text),
-          "gender": gender.text
-        });
+        var response = await client.post(
+          Uri.parse(uri),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: body,
+        );
+        print(response.body);
 
-        var response = jsonDecode(res.body);
-        if (response["message"] == "true") {
-          print("Record Inserted");
-        } else {
-          print("some issue");
-          print(response);
-        }
+        // if (response["message"] == "true") {
+        //   print("Record Inserted");
+        // } else {
+        //   print("some issue");
+        //   print(response);
+        // }
       } catch (e) {
         print(e);
       }
@@ -185,6 +194,12 @@ class _SignupPageState extends State<SignupPage> {
                         height: 20,
                       ),
                       TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your age';
+                          }
+                          return null;
+                        },
                         controller: age,
                         decoration: InputDecoration(
                             hintText: "Age",
@@ -199,6 +214,12 @@ class _SignupPageState extends State<SignupPage> {
                         height: 20,
                       ),
                       TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please specify your gender';
+                          }
+                          return null;
+                        },
                         controller: gender,
                         decoration: InputDecoration(
                             hintText: "Gender",

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fitness_app/home.dart';
 import 'package:fitness_app/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -17,54 +18,110 @@ class _LoginPageState extends State<LoginPage> {
   bool error = false, showprogress = false;
   String username = "", password = "";
 
-  var _username = TextEditingController();
+  var _email = TextEditingController();
   var _password = TextEditingController();
 
-  startLogin() async {
-    String apiurl = "http://localhost:81/UserData_api/login.php";
-    print(username);
+  Future<void> startLogin() async {
+    // Define your API endpoint
+    var apiUrl = "http://localhost:3001/auth/login";
+    var client = http.Client();
+    var data = {"email": _email.text, "password": _password.text};
+    var body = json.encode(data);
+    try {
+      // Make a GET request to the API endpoint
+      var response = await client.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body,
+      );
+      print(response.statusCode);
+      // if (response.statusCode == 200) {
+      //   var jsondata = json.decode(response.body);
+      //   if (jsondata["error"]) {
+      //     setState(() {
+      //       showprogress = false; //don't show progress indicator
+      //       error = true;
+      //       errormsg = jsondata["message"];
+      //     });
+      //   } else {
+      //     if (jsondata["success"]) {
+      //       setState(() {
+      //         error = false;
+      //         showprogress = false;
+      //       });
+      //     } else {
+      //       showprogress = false; //don't show progress indicator
+      //       error = true;
+      //       errormsg = "Something went wrong.";
+      //     }
+      //   }
+      // } else {
+      //   setState(() {
+      //     showprogress = false; //don't show progress indicator
+      //     error = true;
+      //     errormsg = "Invalid credentials";
+      //   });
 
-    var response = await http.post(Uri.parse(apiurl), body: {
-      'Username': _username.text, //get the email text
-      'Password': _password.text //get password text
-    });
-    print(_username.text);
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      var jsondata = json.decode(response.body);
-      if (jsondata["error"]) {
-        setState(() {
-          showprogress = false; //don't show progress indicator
-          error = true;
-          errormsg = jsondata["message"];
-        });
-      } else {
-        if (jsondata["success"]) {
-          setState(() {
-            error = false;
-            showprogress = false;
-          });
-          //save the data returned from server
-          //and navigate to home page
-          // String uid = jsondata["uid"];
-          String email = jsondata["Email"];
-          //  String address = jsondata["address"];
-          print(email);
-          //user shared preference to save data
-        } else {
-          showprogress = false; //don't show progress indicator
-          error = true;
-          errormsg = "Something went wrong.";
-        }
-      }
-    } else {
+      // }
+      //second code
+      if (response.statusCode == 201) {
+      print('Login successful');
       setState(() {
-        showprogress = false; //don't show progress indicator
-        error = true;
-        errormsg = "Error during connecting to server.";
+        error = false;
+        showprogress = false;
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> HomePage()));
       });
+      // Additional logic for successful login
+    } else if (response.statusCode == 401) {
+      print('Invalid username or password');
+      setState(() {
+        error = true;
+        errormsg = "Invalid username or password";
+      });
+      // Additional logic for failed login due to invalid credentials
+    } else {
+      // Handle other status codes
+      print('Failed to validate login data. Error: ${response.statusCode}');
+    }
+
+      //third code
+      // if (response.statusCode == 201) {
+      //   var jsondata = json.decode(response.body);
+      //   if (jsondata["success"]) {
+      //     print('Login successful');
+      //     setState(() {
+      //       // error = false;
+      //       // showprogress = false;
+      //     });
+      //   }else {
+      //     print('Login failed');
+      //     setState(() {
+      //       // error = true;
+      //       // showprogress = false;
+      //       errormsg = jsondata["message"];
+      //     });
+      //   }
+      //   // Additional logic for successful login
+      // } else if (response.statusCode == 401) {
+      //   print('Invalid username or password');
+      //   setState(() {
+      //     // error = true;
+      //     // errormsg = "Invalid credentials";
+      //   });
+      //   // Additional logic for failed login due to invalid credentials
+      // } else {
+      //   // Handle other status codes
+      //   print('Failed to validate login data. Error: ${response.statusCode}');
+      // }
+    } catch (error) {
+      // Handle errors from the HTTP request
+      print('API connection failed. Error: $error');
     }
   }
+
+  final _loginKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -111,64 +168,86 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _inputField(context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        TextField(
-          controller: _username,
-          decoration: InputDecoration(
-              hintText: "Username",
+    return Form(
+      key: _loginKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your email';
+              }
+              return null;
+            },
+            controller: _email,
+            decoration: InputDecoration(
+                hintText: "Email",
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(18),
+                    borderSide: BorderSide.none),
+                fillColor: Colors.purple.withOpacity(0.1),
+                filled: true,
+                prefixIcon: const Icon(Icons.person)),
+          ),
+          const SizedBox(height: 10),
+          TextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your Password';
+              } else if (_password.text != value) {
+                return "Password Incorrect";
+              }
+              return null;
+            },
+            controller: _password,
+            decoration: InputDecoration(
+              hintText: "Password",
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
                   borderSide: BorderSide.none),
               fillColor: Colors.purple.withOpacity(0.1),
               filled: true,
-              prefixIcon: const Icon(Icons.person)),
-        ),
-        const SizedBox(height: 10),
-        TextField(
-          controller: _password,
-          decoration: InputDecoration(
-            hintText: "Password",
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(18),
-                borderSide: BorderSide.none),
-            fillColor: Colors.purple.withOpacity(0.1),
-            filled: true,
-            prefixIcon: const Icon(Icons.password),
+              prefixIcon: const Icon(Icons.password),
+            ),
+            obscureText: true,
           ),
-          obscureText: true,
-        ),
-        const SizedBox(height: 10),
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              showprogress = true;
-            });
-            startLogin();
-          },
-          style: ElevatedButton.styleFrom(
-            shape: const StadiumBorder(),
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            backgroundColor: Colors.purple,
+          const SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {
+              if (_loginKey.currentState!.validate()) {
+                startLogin();
+              }
+              // else{
+              //   error = true;
+              // }
+            },
+            style: ElevatedButton.styleFrom(
+              shape: const StadiumBorder(),
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              backgroundColor: Colors.purple,
+            ),
+            child: const Text(
+              "Login",
+              style: TextStyle(fontSize: 20),
+            ),
           ),
-          child: const Text(
-            "Login",
-            style: TextStyle(fontSize: 20),
+          SizedBox(
+            height: 10,
           ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Container(
-          //show error message here
-          margin: EdgeInsets.only(top: 30),
-          padding: EdgeInsets.all(10),
-          child: error ? errmsg(errormsg) : Container(),
-          //if error == true then show error message
-          //else set empty container as child
-        ),
-      ],
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Container(
+              //show error message here
+              margin: EdgeInsets.only(top: 30),
+              padding: EdgeInsets.all(4),
+              child: error ? errmsg(errormsg) : Container(),
+              //if error == true then show error message
+              //else set empty container as child
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -200,25 +279,24 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-    Widget errmsg(String text){
-  //error message widget.
-        return Container(
-            padding: EdgeInsets.all(15.00),
-            margin: EdgeInsets.only(bottom: 10.00),
-            decoration: BoxDecoration( 
-               borderRadius: BorderRadius.circular(30),
-               color: Colors.red,
-               border: Border.all(color:Colors.red, width:2)
-            ),
-            child: Row(children: <Widget>[
-                Container(
-                    margin: EdgeInsets.only(right:6.00),
-                    child: Icon(Icons.info, color: Colors.white),
-                ), // icon for error message
-                
-                Text(text, style: TextStyle(color: Colors.white, fontSize: 18)),
-                //show error message text
-            ]),
-        );
+  Widget errmsg(String text) {
+    //error message widget.
+    return Container(
+      padding: EdgeInsets.all(15.00),
+      margin: EdgeInsets.only(bottom: 10.00),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: Colors.red,
+          border: Border.all(color: Colors.red, width: 2)),
+      child: Row(children: <Widget>[
+        Container(
+          margin: EdgeInsets.only(right: 6.00),
+          child: Icon(Icons.info, color: Colors.white),
+        ), // icon for error message
+
+        Text(text, style: TextStyle(color: Colors.white, fontSize: 18)),
+        //show error message text
+      ]),
+    );
   }
 }

@@ -122,7 +122,7 @@ class _BMI_Screen_PageState extends State<BMI_Screen_Page> {
                       MText("Hi Gursewak!"),
                       BText("Calculate your BMI"),
                       SizedBox(
-                        height: 14,
+                        height: 24,
                       ),
                       Row(
                         children: [
@@ -160,7 +160,7 @@ class _BMI_Screen_PageState extends State<BMI_Screen_Page> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
-                        height: 6,
+                        height: 12,
                       ),
                       Row(
                         children: [
@@ -221,7 +221,7 @@ class _BMI_Screen_PageState extends State<BMI_Screen_Page> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
-                        height: 6,
+                        height: 12,
                       ),
                       Row(
                         children: [
@@ -333,7 +333,7 @@ class _BMI_Screen_PageState extends State<BMI_Screen_Page> {
                       ),
                       showWidget? ElevatedButton(
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Recommendations(BMI_Status: _finalStatus.text,)));
+                            // Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Recommendations(BMI_Status: _finalStatus.text,)));
                           },
                           style: ButtonStyle(
                             textStyle: MaterialStateProperty.all(const TextStyle(fontSize: 16)),

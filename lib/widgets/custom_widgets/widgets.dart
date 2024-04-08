@@ -1,3 +1,4 @@
+import 'package:fitness_app/bmi_screen.dart';
 import 'package:flutter/material.dart';
 
 appbar(context) {
@@ -48,3 +49,475 @@ BText(context) {
 MText(context) {
   return Text(context, style: TextStyle(color: Colors.black, fontSize: 15));
 }
+
+TText(context){
+  return Text(context,style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),);
+}
+
+PointText(context){
+  return Text(context, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 12),);
+}
+
+// tutorial_recommendation(){
+//   if (widget.BMI_Status == "Underweight"){
+//     return Row(
+//                         children: [
+//                           Expanded(
+//                               child: SizedBox(
+//                             height: 300,
+//                             child: ListView.builder(
+//                                 itemCount: tutorial.length > 8
+//                                         ? tutorial.length - 8
+//                                         : 0,
+//                                 itemBuilder: (BuildContext context, index) {
+//                                    final dataIndex = index + 8;
+//                                   return Padding(
+//                                     padding: EdgeInsets.all(6),
+//                                     child: Container(
+//                                       width: double.infinity,
+//                                       padding: EdgeInsets.all(16),
+//                                       height: 100,
+//                                       decoration: BoxDecoration(
+//                                           shape: BoxShape.rectangle,
+//                                           color: Color.fromARGB(
+//                                               255, 16, 133, 228),
+//                                           borderRadius: BorderRadius.all(
+//                                               Radius.circular(28))),
+//                                       child: Column(
+//                                         crossAxisAlignment:
+//                                             CrossAxisAlignment.start,
+//                                         children: [
+//                                           Text("title"),
+//                                           Container(
+//                                             padding: EdgeInsets.only(top:16),
+//                                             alignment: Alignment.bottomRight,
+//                                               child: ElevatedButton(
+//                                                   onPressed: () {
+//                                                     showDialog(
+//                                               context: context,
+//                                               barrierDismissible: false,
+//                                               builder: (BuildContext context) {
+//                                                 return AlertDialog(
+//                                                     title: Text(
+//                                                         '${tutorial[dataIndex].title}'),
+//                                                     content: Column(
+//                                                       children: [
+//                                                         Text(
+//                                                           '${tutorial[dataIndex].description}',
+//                                                           style: TextStyle(
+//                                                               fontSize: 12),
+//                                                         ),
+//                                                         SizedBox(
+//                                                           height: 20,
+//                                                         ),
+//                                                         YoutubePlayer(
+//                                                           controller:
+//                                                               YoutubePlayerController(
+//                                                             initialVideoId:
+//                                                                 '${tutorial[dataIndex].videoUrl}',
+//                                                             flags:
+//                                                                 YoutubePlayerFlags(
+//                                                                     autoPlay: true,
+//                                                                     mute: false),
+//                                                           ),
+//                                                           showVideoProgressIndicator:
+//                                                               true,
+//                                                           progressIndicatorColor:
+//                                                               Colors.blueAccent,
+//                                                         ),
+                                                      
+//                                                         FloatingActionButton(
+//                                                             onPressed: () {
+//                                                           setState(() {
+//                                                             if (_controller
+//                                                                 .value.isPlaying) {
+//                                                               _controller.pause();
+//                                                             } else {
+//                                                               _controller.play();
+//                                                             }
+//                                                           });
+//                                                         }),
+//                                                         Icon(_controller
+//                                                                 .value.isPlaying
+//                                                             ? Icons.pause
+//                                                             : Icons.play_arrow)
+//                                                       ],
+//                                                     ),
+//                                                     actions: <Widget>[
+//                                                       TextButton(
+//                                                         onPressed: () {
+//                                                           Navigator.of(context)
+//                                                               .pop();
+//                                                         },
+//                                                         child: Text('Close'),
+//                                                       ),
+//                                                     ],
+//                                                   );
+                                                
+//                                               },
+//                                             );
+//                                                   },
+//                                                   style: ElevatedButton.styleFrom(
+//                                                     foregroundColor: Color.fromARGB(255, 9, 105, 184), backgroundColor: Colors.white,
+//                                                     padding: EdgeInsets.symmetric(horizontal: 26, vertical: 15),
+//                                                     shape: RoundedRectangleBorder(
+//                                                       borderRadius: BorderRadius.circular(10.0),
+//                                                     ),
+//                                                     elevation: 5,
+//                                                   ),
+//                                                   child: Text("Try")))
+//                                         ],
+//                                       ),
+//                                     ),
+//                                   );
+//                                 }),
+//                           ))
+//                         ],
+//                       );
+//   }else if (widget.BMI_Status == "Healthy"){
+//     return Row(
+//                         children: [
+//                           Expanded(
+//                               child: SizedBox(
+//                             height: 300,
+//                             child: ListView.builder(
+//                                 itemCount: tutorial.length > 10
+//                                         ? tutorial.length - 10
+//                                         : 0,
+//                                 itemBuilder: (BuildContext context, index) {
+//                                    final dataIndex = index + 10;
+//                                   return Padding(
+//                                     padding: EdgeInsets.all(6),
+//                                     child: Container(
+//                                       width: double.infinity,
+//                                       padding: EdgeInsets.all(16),
+//                                       height: 100,
+//                                       decoration: BoxDecoration(
+//                                           shape: BoxShape.rectangle,
+//                                           color: Color.fromARGB(
+//                                               255, 16, 133, 228),
+//                                           borderRadius: BorderRadius.all(
+//                                               Radius.circular(28))),
+//                                       child: Column(
+//                                         crossAxisAlignment:
+//                                             CrossAxisAlignment.start,
+//                                         children: [
+//                                           Text("title"),
+//                                           Container(
+//                                             padding: EdgeInsets.only(top:16),
+//                                             alignment: Alignment.bottomRight,
+//                                               child: ElevatedButton(
+//                                                   onPressed: () {
+//                                                     showDialog(
+//                                               context: context,
+//                                               barrierDismissible: false,
+//                                               builder: (BuildContext context) {
+//                                                 return AlertDialog(
+//                                                     title: Text(
+//                                                         '${tutorial[dataIndex].title}'),
+//                                                     content: Column(
+//                                                       children: [
+//                                                         Text(
+//                                                           '${tutorial[dataIndex].description}',
+//                                                           style: TextStyle(
+//                                                               fontSize: 12),
+//                                                         ),
+//                                                         SizedBox(
+//                                                           height: 20,
+//                                                         ),
+//                                                         YoutubePlayer(
+//                                                           controller:
+//                                                               YoutubePlayerController(
+//                                                             initialVideoId:
+//                                                                 '${tutorial[dataIndex].videoUrl}',
+//                                                             flags:
+//                                                                 YoutubePlayerFlags(
+//                                                                     autoPlay: true,
+//                                                                     mute: false),
+//                                                           ),
+//                                                           showVideoProgressIndicator:
+//                                                               true,
+//                                                           progressIndicatorColor:
+//                                                               Colors.blueAccent,
+//                                                         ),
+                                                      
+//                                                         FloatingActionButton(
+//                                                             onPressed: () {
+//                                                           setState(() {
+//                                                             if (_controller
+//                                                                 .value.isPlaying) {
+//                                                               _controller.pause();
+//                                                             } else {
+//                                                               _controller.play();
+//                                                             }
+//                                                           });
+//                                                         }),
+//                                                         Icon(_controller
+//                                                                 .value.isPlaying
+//                                                             ? Icons.pause
+//                                                             : Icons.play_arrow)
+//                                                       ],
+//                                                     ),
+//                                                     actions: <Widget>[
+//                                                       TextButton(
+//                                                         onPressed: () {
+//                                                           Navigator.of(context)
+//                                                               .pop();
+//                                                         },
+//                                                         child: Text('Close'),
+//                                                       ),
+//                                                     ],
+//                                                   );
+                                                
+//                                               },
+//                                             );
+//                                                   },
+//                                                   style: ElevatedButton.styleFrom(
+//                                                     foregroundColor: Color.fromARGB(255, 9, 105, 184), backgroundColor: Colors.white,
+//                                                     padding: EdgeInsets.symmetric(horizontal: 26, vertical: 15),
+//                                                     shape: RoundedRectangleBorder(
+//                                                       borderRadius: BorderRadius.circular(10.0),
+//                                                     ),
+//                                                     elevation: 5,
+//                                                   ),
+//                                                   child: Text("Try")))
+//                                         ],
+//                                       ),
+//                                     ),
+//                                   );
+//                                 }),
+//                           ))
+//                         ],
+//                       );
+//   }else if (widget.BMI_Status == "Overweight"){
+//     return Row(
+//                         children: [
+//                           Expanded(
+//                               child: SizedBox(
+//                             height: 300,
+//                             child: ListView.builder(
+//                                 itemCount: tutorial.length > 12
+//                                         ? tutorial.length - 12
+//                                         : 0,
+//                                 itemBuilder: (BuildContext context, index) {
+//                                    final dataIndex = index + 12;
+//                                   return Padding(
+//                                     padding: EdgeInsets.all(6),
+//                                     child: Container(
+//                                       width: double.infinity,
+//                                       padding: EdgeInsets.all(16),
+//                                       height: 100,
+//                                       decoration: BoxDecoration(
+//                                           shape: BoxShape.rectangle,
+//                                           color: Color.fromARGB(
+//                                               255, 16, 133, 228),
+//                                           borderRadius: BorderRadius.all(
+//                                               Radius.circular(28))),
+//                                       child: Column(
+//                                         crossAxisAlignment:
+//                                             CrossAxisAlignment.start,
+//                                         children: [
+//                                           Text("title"),
+//                                           Container(
+//                                             padding: EdgeInsets.only(top:16),
+//                                             alignment: Alignment.bottomRight,
+//                                               child: ElevatedButton(
+//                                                   onPressed: () {
+//                                                     showDialog(
+//                                               context: context,
+//                                               barrierDismissible: false,
+//                                               builder: (BuildContext context) {
+//                                                 return AlertDialog(
+//                                                     title: Text(
+//                                                         '${tutorial[dataIndex].title}'),
+//                                                     content: Column(
+//                                                       children: [
+//                                                         Text(
+//                                                           '${tutorial[dataIndex].description}',
+//                                                           style: TextStyle(
+//                                                               fontSize: 12),
+//                                                         ),
+//                                                         SizedBox(
+//                                                           height: 20,
+//                                                         ),
+//                                                         YoutubePlayer(
+//                                                           controller:
+//                                                               YoutubePlayerController(
+//                                                             initialVideoId:
+//                                                                 '${tutorial[dataIndex].videoUrl}',
+//                                                             flags:
+//                                                                 YoutubePlayerFlags(
+//                                                                     autoPlay: true,
+//                                                                     mute: false),
+//                                                           ),
+//                                                           showVideoProgressIndicator:
+//                                                               true,
+//                                                           progressIndicatorColor:
+//                                                               Colors.blueAccent,
+//                                                         ),
+                                                      
+//                                                         FloatingActionButton(
+//                                                             onPressed: () {
+//                                                           setState(() {
+//                                                             if (_controller
+//                                                                 .value.isPlaying) {
+//                                                               _controller.pause();
+//                                                             } else {
+//                                                               _controller.play();
+//                                                             }
+//                                                           });
+//                                                         }),
+//                                                         Icon(_controller
+//                                                                 .value.isPlaying
+//                                                             ? Icons.pause
+//                                                             : Icons.play_arrow)
+//                                                       ],
+//                                                     ),
+//                                                     actions: <Widget>[
+//                                                       TextButton(
+//                                                         onPressed: () {
+//                                                           Navigator.of(context)
+//                                                               .pop();
+//                                                         },
+//                                                         child: Text('Close'),
+//                                                       ),
+//                                                     ],
+//                                                   );
+                                                
+//                                               },
+//                                             );
+//                                                   },
+//                                                   style: ElevatedButton.styleFrom(
+//                                                     foregroundColor: Color.fromARGB(255, 9, 105, 184), backgroundColor: Colors.white,
+//                                                     padding: EdgeInsets.symmetric(horizontal: 26, vertical: 15),
+//                                                     shape: RoundedRectangleBorder(
+//                                                       borderRadius: BorderRadius.circular(10.0),
+//                                                     ),
+//                                                     elevation: 5,
+//                                                   ),
+//                                                   child: Text("Try")))
+//                                         ],
+//                                       ),
+//                                     ),
+//                                   );
+//                                 }),
+//                           ))
+//                         ],
+//                       );
+//   }else {
+//     return Row(
+//                         children: [
+//                           Expanded(
+//                               child: SizedBox(
+//                             height: 300,
+//                             child: ListView.builder(
+//                                 itemCount: tutorial.length > 14
+//                                         ? tutorial.length - 14
+//                                         : 0,
+//                                 itemBuilder: (BuildContext context, index) {
+//                                    final dataIndex = index + 14;
+//                                   return Padding(
+//                                     padding: EdgeInsets.all(6),
+//                                     child: Container(
+//                                       width: double.infinity,
+//                                       padding: EdgeInsets.all(16),
+//                                       height: 100,
+//                                       decoration: BoxDecoration(
+//                                           shape: BoxShape.rectangle,
+//                                           color: Color.fromARGB(
+//                                               255, 16, 133, 228),
+//                                           borderRadius: BorderRadius.all(
+//                                               Radius.circular(28))),
+//                                       child: Column(
+//                                         crossAxisAlignment:
+//                                             CrossAxisAlignment.start,
+//                                         children: [
+//                                           Text("title"),
+//                                           Container(
+//                                             padding: EdgeInsets.only(top:16),
+//                                             alignment: Alignment.bottomRight,
+//                                               child: ElevatedButton(
+//                                                   onPressed: () {
+//                                                     showDialog(
+//                                               context: context,
+//                                               barrierDismissible: false,
+//                                               builder: (BuildContext context) {
+//                                                 return AlertDialog(
+//                                                     title: Text(
+//                                                         '${tutorial[dataIndex].title}'),
+//                                                     content: Column(
+//                                                       children: [
+//                                                         Text(
+//                                                           '${tutorial[dataIndex].description}',
+//                                                           style: TextStyle(
+//                                                               fontSize: 12),
+//                                                         ),
+//                                                         SizedBox(
+//                                                           height: 20,
+//                                                         ),
+//                                                         YoutubePlayer(
+//                                                           controller:
+//                                                               YoutubePlayerController(
+//                                                             initialVideoId:
+//                                                                 '${tutorial[dataIndex].videoUrl}',
+//                                                             flags:
+//                                                                 YoutubePlayerFlags(
+//                                                                     autoPlay: true,
+//                                                                     mute: false),
+//                                                           ),
+//                                                           showVideoProgressIndicator:
+//                                                               true,
+//                                                           progressIndicatorColor:
+//                                                               Colors.blueAccent,
+//                                                         ),
+                                                      
+//                                                         FloatingActionButton(
+//                                                             onPressed: () {
+//                                                           setState(() {
+//                                                             if (_controller
+//                                                                 .value.isPlaying) {
+//                                                               _controller.pause();
+//                                                             } else {
+//                                                               _controller.play();
+//                                                             }
+//                                                           });
+//                                                         }),
+//                                                         Icon(_controller
+//                                                                 .value.isPlaying
+//                                                             ? Icons.pause
+//                                                             : Icons.play_arrow)
+//                                                       ],
+//                                                     ),
+//                                                     actions: <Widget>[
+//                                                       TextButton(
+//                                                         onPressed: () {
+//                                                           Navigator.of(context)
+//                                                               .pop();
+//                                                         },
+//                                                         child: Text('Close'),
+//                                                       ),
+//                                                     ],
+//                                                   );
+                                                
+//                                               },
+//                                             );
+//                                                   },
+//                                                   style: ElevatedButton.styleFrom(
+//                                                     foregroundColor: Color.fromARGB(255, 9, 105, 184), backgroundColor: Colors.white,
+//                                                     padding: EdgeInsets.symmetric(horizontal: 26, vertical: 15),
+//                                                     shape: RoundedRectangleBorder(
+//                                                       borderRadius: BorderRadius.circular(10.0),
+//                                                     ),
+//                                                     elevation: 5,
+//                                                   ),
+//                                                   child: Text("Try")))
+//                                         ],
+//                                       ),
+//                                     ),
+//                                   );
+//                                 }),
+//                           ))
+//                         ],
+//                       );
+//   }
+// }
